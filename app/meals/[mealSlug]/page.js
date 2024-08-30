@@ -3,12 +3,25 @@ import classes from './page.module.css';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 
-export default async function MealsDetailsPage({params}) {
-    const meal = await getMeal(params.mealSlug);
 
+export async function generateMetadata({params}) {
+    const meal = await getMeal(params.mealSlug);
+    
     if(!meal){
         notFound();
     }
+    
+    return {
+        title: meal.title,
+        description: meal.summary
+    }
+  };
+
+
+export default async function MealsDetailsPage({params}) {
+    const meal = await getMeal(params.mealSlug);
+    
+
 
     meal.instructions = meal.instructions.replace(/\n/g, '<br/>');
 
